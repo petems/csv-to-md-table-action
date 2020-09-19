@@ -1,13 +1,15 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'CSV to Markdown Table'
+description: 'Convert a given CSV to a Markdown table'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  csvinput:  # id of input
+    description: 'CSV to be converted'
     required: true
-    default: '1000'
 outputs:
-  time: # output will be available to future steps
-    description: 'The message to output'
+  markdown-table: # id of output
+    description: 'The markdown formatted table'
 runs:
   using: 'node12'
   main: 'dist/index.js'
+branding:
+  icon: list
+  color: blue

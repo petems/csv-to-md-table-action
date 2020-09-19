@@ -1,23 +1,29 @@
-const wait = require('./wait');
 const process = require('process');
 const cp = require('child_process');
 const path = require('path');
 
-test('throws invalid number', async () => {
-  await expect(wait('foo')).rejects.toThrow('milliseconds not a number');
-});
+const csvString = `
+Name,Position,Wanted
+"Andromedus, Darrow au",Leader,Yes
+"Augustus, Victoria au",Accomplice,Yes
+`.trim();
 
-test('wait 500 ms', async () => {
-  const start = new Date();
-  await wait(500);
-  const end = new Date();
-  var delta = Math.abs(end - start);
-  expect(delta).toBeGreaterThanOrEqual(500);
-});
+const expectedLog = `CSV Input given:
+Name,Position,Wanted
+"Andromedus, Darrow au",Leader,Yes
+"Augustus, Victoria au",Accomplice,Yes
+Markdown table Created:
+| Name                  | Position   | Wanted |
+| --------------------- | ---------- | ------ |
+| Andromedus, Darrow au | Leader     | Yes    |
+| Augustus, Victoria au | Accomplice | Yes    |
+::set-output name=markdown-table::| Name                  | Position   | Wanted |%0A| --------------------- | ---------- | ------ |%0A| Andromedus, Darrow au | Leader     | Yes    |%0A| Augustus, Victoria au | Accomplice | Yes    |
+`;
 
 // shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
-  process.env['INPUT_MILLISECONDS'] = 500;
-  const ip = path.join(__dirname, 'index.js');
-  console.log(cp.execSync(`node ${ip}`, {env: process.env}).toString());
-})
+test('parses csv and converts to valid markdown table', () => {
+  process.env.INPUT_CSVINPUT = csvString;
+  const markdownTable = path.join(__dirname, 'index.js');
+  const actionLog = cp.execSync(`node ${markdownTable}`, { env: process.env }).toString();
+  expect(actionLog).toBe(expectedLog);
+});

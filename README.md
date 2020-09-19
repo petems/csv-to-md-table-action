@@ -1,20 +1,69 @@
-# Create a JavaScript Action
+# csv-to-md-table-action
 
-<p align="center">
-  <a href="https://github.com/actions/javascript-action/actions"><img alt="javscript-action status" src="https://github.com/actions/javascript-action/workflows/units-test/badge.svg"></a>
-</p>
+This action prints converts a given CSV to a markdown formatted table
 
-Use this template to bootstrap the creation of a JavaScript action.:rocket:
+## Inputs
 
-This template includes tests, linting, a validation workflow, publishing, and versioning guidance.
+### `csvinput`
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+**Required** CSV to be converted.
 
-## Create an action from this template
+## Outputs
 
-Click the `Use this Template` and provide the new repo details for your action
+### `markdown-table`
 
-## Code in Main
+The markdown formatted table
+
+## Example usage
+
+```yaml
+uses: petems/csv-to-markdown-action@master
+with:
+  csvinput: | 
+    First Name, Last Name, Address, Town, State, Zip
+    John,Doe,120 jefferson st.,Riverside, NJ, 08075
+    Jack,McGinnis,220 hobo Av.,Phila, PA,09119
+```
+
+You can then take the output to post comments on pull-requests for example:
+
+```yaml
+on:
+  pull_request:
+    paths:
+      - '*/**.csv'
+
+jobs:
+  build:
+    name: Comment CSV as Pull-request Table
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Read CSV
+        id: csv
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./people.csv
+      uses: petems/csv-to-markdown-action@master
+        id: csv-table-output
+        with:
+          csvinput: ${{ steps.csv.outputs.content }}
+      - uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            ${{steps.csv-table-output.outputs.markdown-table}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+          allow-repeats: true
+```
+
+So when you make a change to CSV file via pull-request, it makes a comment with the table:
+![image](https://user-images.githubusercontent.com/1064715/93686821-e0260e80-fab0-11ea-8932-4424172c8190.png)
+
+There's a demo of it in action here: https://github.com/petems/csv-table-comment-example
+
+## Testing
 
 Install the dependencies
 
@@ -27,42 +76,13 @@ Run the tests :heavy_check_mark:
 ```bash
 $ npm test
 
+> javascript-action@1.0.0 test /Users/petersouter/projects/csv-to-md-table-action
+> jest
+
  PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
+  ✓ parses csv and converts to valid markdown table (138ms)
 ...
 ```
-
-## Change action.yml
-
-The action.yml contains defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-const core = require('@actions/core');
-...
-
-async function run() {
-  try {
-      ...
-  }
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
 
 ## Package for distribution
 
@@ -102,15 +122,3 @@ Note: We recommend using the `--license` option for ncc, which will create a lic
 Your action is now published! :rocket:
 
 See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Usage
-
-You can now consume the action by referencing the v1 branch
-
-```yaml
-uses: actions/javascript-action@v1
-with:
-  milliseconds: 1000
-```
-
-See the [actions tab](https://github.com/actions/javascript-action/actions) for runs of this action! :rocket:
