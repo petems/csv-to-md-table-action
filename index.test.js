@@ -18,7 +18,7 @@ Markdown table Created:
 | Andromedus, Darrow au | Leader     | Yes    |
 | Augustus, Victoria au | Accomplice | Yes    |
 ::set-output name=markdown-table::| Name                  | Position   | Wanted |%0A| --------------------- | ---------- | ------ |%0A| Andromedus, Darrow au | Leader     | Yes    |%0A| Augustus, Victoria au | Accomplice | Yes    |
-`;
+`.trim();
 
 // shows how the runner will run a javascript action with env / stdout protocol
 test('parses csv and converts to valid markdown table', () => {
