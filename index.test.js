@@ -17,6 +17,7 @@ Markdown table Created:
 | --------------------- | ---------- | ------ |
 | Andromedus, Darrow au | Leader     | Yes    |
 | Augustus, Victoria au | Accomplice | Yes    |
+
 ::set-output name=markdown-table::| Name                  | Position   | Wanted |%0A| --------------------- | ---------- | ------ |%0A| Andromedus, Darrow au | Leader     | Yes    |%0A| Augustus, Victoria au | Accomplice | Yes    |
 `;
 
