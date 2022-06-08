@@ -17,7 +17,7 @@ The markdown formatted table
 ## Example usage
 
 ```yaml
-uses: petems/csv-to-md-action@master
+uses: petems/csv-to-md-table-action@master
 with:
   csvinput: | 
     First Name, Last Name, Address, Town, State, Zip
@@ -45,7 +45,7 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: ./people.csv
-      uses: petems/csv-to-md-action@master
+      - uses: petems/csv-to-md-action@master
         id: csv-table-output
         with:
           csvinput: ${{ steps.csv.outputs.content }}
