@@ -1,6 +1,6 @@
 {
   "name": "csv-to-md-table-action",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Convert CSV input into markdown table output",
   "main": "index.js",
   "scripts": {
