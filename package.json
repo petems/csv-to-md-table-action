@@ -25,11 +25,12 @@
   },
   "homepage": "https://github.com/petems/csv-to-md-table-action#readme",
   "dependencies": {
-    "@actions/core": "^1.9.1",
+    "@actions/core": "^1.10.0",
     "csvtomd-lib": "^0.1.3"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.34.0",
+    "@actions/core": "^1.10.0",
     "eslint": "^8.6.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.22.0",
