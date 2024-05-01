@@ -8,7 +8,7 @@ outputs:
   markdown-table: # id of output
     description: 'The markdown formatted table'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
 branding:
   icon: list
